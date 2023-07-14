@@ -1,40 +1,47 @@
+use components::Position;
+use events::EventHandler;
+use events::UserEvent;
+use shrev::EventChannel;
+use specs::Dispatcher;
+use specs::DispatcherBuilder;
+use specs::World;
+use specs::WorldExt;
+use world::generators::classic::ClassicGenerator;
+use world::manager::ChunkManager;
+
 pub mod components;
 pub mod entity;
+pub mod events;
 pub mod id;
 pub mod world;
 
-use components::Position;
-use rand::Rng;
-use specs::prelude::*;
-use world::generators::classic::ClassicGenenerator;
-use world::manager::ChunkManager;
+pub type UserChannel = EventChannel<UserEvent>;
 
-use shrev::EventChannel;
-
-pub enum Event {
-    A,
-    B,
+pub struct Engine {
+    pub world: World,
+    pub dispatcher: Dispatcher<'static, 'static>,
 }
 
-#[derive(Default)]
-pub struct EventHandler {
-    reader: Option<ReaderId<Event>>,
+impl Engine {
+    pub fn dispatch(&mut self) {
+        self.dispatcher.dispatch(&self.world);
+    }
 }
 
-impl<'a> System<'a> for EventHandler {
-    type SystemData = Read<'a, EventChannel<Event>>;
+impl Default for Engine {
+    fn default() -> Self {
+        let mut world = World::default();
 
-    fn run(&mut self, data: Self::SystemData) {
-        for event in data.read(&mut self.reader.as_mut().unwrap()) {
-            match event {
-                Event::A => (),
-                Event::B => (),
-            }
+        world.register::<Position>();
+        world.insert(ChunkManager::new(Box::new(ClassicGenerator::new(1))));
+
+        Engine {
+            world,
+            dispatcher: DispatcherBuilder::new().build(),
         }
     }
+}
 
-    fn setup(&mut self, world: &mut World) {
-        Self::SystemData::setup(world);
-        self.reader = Some(world.fetch_mut::<EventChannel<Event>>().register_reader());
-    }
+pub fn init() -> Engine {
+    Engine::default()
 }

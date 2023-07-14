@@ -1,3 +1,6 @@
+//! Module for generating a [QuadArea] that is a rectangular area iterator. This is used for
+//! generating chunks around the player.
+
 use super::chunk::ChunkCoord;
 
 /// Quad area generates a rectangular area for a chunk coord.
@@ -8,6 +11,7 @@ pub struct QuadArea {
 }
 
 impl QuadArea {
+    /// Creates a new quad area with a given radius.
     pub fn new(coord: ChunkCoord, radius: usize) -> QuadArea {
         let start = ChunkCoord {
             x: coord.x.saturating_sub(radius),

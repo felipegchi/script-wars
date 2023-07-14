@@ -1,5 +1,5 @@
 [package]
-name = "sw-lang"
+name = "sw-network-client"
 version = "0.1.0"
 edition = "2021"
 

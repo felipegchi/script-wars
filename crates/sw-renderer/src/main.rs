@@ -1,3 +1,4 @@
 fn main() {
-    println!("Hello, world!");
+    let mut engine = sw_core::init();
+    engine.dispatch();
 }

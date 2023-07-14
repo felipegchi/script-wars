@@ -1,8 +1,9 @@
+//! Traits and structures for world generation. The world generator is responsible for generating
+//! chunks of the world.
+
 use super::chunk::{Chunk, ChunkCoord};
 
 pub mod classic;
-
-// TODO: Change to channels if this take too much time.
 
 /// Trait for world generators that takes only the coordinates
 /// of the chunk and deterministically returns a piece of the

@@ -3,6 +3,8 @@ resolver = "2"
 
 members = [
     "crates/sw-core",
-    "crates/sw-lang",
+    "crates/sw-compiler",
     "crates/sw-renderer",
+    "crates/sw-network-server",
+    "crates/sw-network-client",
 ]
